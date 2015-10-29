@@ -1,0 +1,9 @@
+public int read()
+         throws IOException
+Reads a byte of data from this input stream. This method blocks if no input is yet available.
+Specified by:
+read in class InputStream
+Returns:
+the next byte of data, or -1 if the end of the file is reached.
+Throws:
+IOException - if an I/O error occurs.
