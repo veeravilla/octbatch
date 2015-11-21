@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:util="http://www.springframework.org/schema/util"
+	xsi:schemaLocation="
+http://www.springframework.org/schema/beans
+http://www.springframework.org/schema/beans/spring-beans.xsd
+http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd
+http://www.springframework.org/schema/context
+http://www.springframework.org/schema/context/spring-context.xsd">
+
+	<bean id="emp" class="com.test.beans.Employee" lazy-init="false"
+		scope="singleton"> <!-- Employee emp = new Employee(); -->
+		<property name="eno" value="101" /> <!-- emp.setEno(101); -->
+		<property name="ename" value="Jhon" /> <!-- emp.setEname(Jhon); -->
+		<property name="salary" value="2345" /> <!-- emp.setSalary(2345); -->
+	</bean>
+
+	<bean id="emp1" class="com.test.beans.Employee" lazy-init="true"> <!-- Employee emp = new Employee(); -->
+		<constructor-arg name="eno" value="345" />
+		<constructor-arg name="ename" value="Tim" />
+		<property name="salary" value="2345" /> <!-- emp.setSalary(2345); -->
+	</bean>
+
+	<bean id="student" class="com.test.beans.Student">
+		<property name="sno" value="9999" />
+		<property name="sname" value="Tim" />
+		<property name="course" ref="courseRef" />
+		<property name="address" ref="addressRef" />
+	</bean>
+
+	<bean id="student1" class="com.test.beans.Student">
+		<property name="sno" value="4567" />
+		<property name="sname" value="Jhon" />
+		<property name="course">
+			<bean class="com.test.beans.Course">
+				<property name="cid" value="Btech" />
+				<property name="cName" value="Computer Science" />
+			</bean>
+		</property>
+		<property name="address" ref="addressRef" />
+	</bean>
+
+	<bean id="courseRef" class="com.test.beans.Course">
+		<property name="cid" value="Ms" />
+		<property name="cName" value="Computer Science" />
+	</bean>
+
+	<bean id="addressRef" class="com.test.beans.Address">
+		<constructor-arg name="zipCode" value="45678" />
+		<constructor-arg name="city" value="Minneapolis" />
+		<constructor-arg name="street" value="452 W Rd" />
+	</bean>
+</beans>

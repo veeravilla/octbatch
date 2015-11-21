@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:util="http://www.springframework.org/schema/util"
+	xsi:schemaLocation="
+http://www.springframework.org/schema/beans
+http://www.springframework.org/schema/beans/spring-beans.xsd
+http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd
+http://www.springframework.org/schema/context
+http://www.springframework.org/schema/context/spring-context.xsd">
+
+	<context:component-scan base-package="com.test" />
+
+	<bean id="referenceData" class="com.test.beans.ReferenceData">
+		<property name="stateList">
+			<list>
+				<value>MN</value>
+				<value>AZ</value>
+				<value>NJ</value>
+				<value>MI</value>
+			</list>
+		</property>
+		<property name="courseSet">
+			<set>
+				<bean id="courseRef" class="com.test.beans.Course">
+					<property name="cid" value="Ms" />
+					<property name="cName" value="Computer Science" />
+				</bean>
+				<ref bean="courseGeneral" />
+			</set>
+		</property>
+		<property name="countyMap">
+			<map>
+				<entry key="USA" value="UStateAmerica" />
+				<entry key="IN" value="INDIA" />
+			</map>
+		</property>
+		<property name="rawList">
+			<list>
+				<value>Jhon</value>
+				<value>Tim</value>
+				<ref bean="courseGeneral" />
+				<bean id="addressRef" class="com.test.beans.Address">
+					<constructor-arg name="zipCode" value="45678" />
+					<constructor-arg name="city" value="Minneapolis" />
+					<constructor-arg name="street" value="452 W Rd" />
+				</bean>
+			</list>
+		</property>
+	</bean>
+
+	<bean id="courseGeneral" class="com.test.beans.Course">
+		<property name="cid" value="BS" />
+		<property name="cName" value="Computer Science" />
+	</bean>
+</beans>
