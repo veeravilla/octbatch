@@ -1,0 +1,44 @@
+package org.tiaa;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+
+public class ValidationClass {
+
+	private static final String START_TIME = "00:00:00";
+	private static final String END_TIME = "05:00:00";
+
+	public static void main(String[] args) {
+		System.out.println(isTimeElapsed());
+
+	}
+
+	private static boolean isTimeElapsed(){
+		try {
+			Calendar currentCalendar = Calendar.getInstance();
+			if(currentCalendar.get(Calendar.DAY_OF_WEEK) == Calendar.SUNDAY){
+				Calendar startCalendar =getTime(START_TIME,true);
+				Calendar endCalendar =getTime(END_TIME,true);
+				Date currentDate = currentCalendar.getTime();
+				if (currentDate.after(startCalendar.getTime()) && currentDate.before(endCalendar.getTime())) {
+					return true;
+				}
+			}
+		} catch (ParseException e) {
+			//no-op
+		}
+		return false;
+	}
+	
+	private static Calendar getTime(String time,boolean isAddDate) throws ParseException{
+		Date startTime = new SimpleDateFormat("HH:mm:ss").parse(time);
+		Calendar calendar = Calendar.getInstance();
+		calendar.setTime(startTime);
+		if(isAddDate) {
+			calendar.add(Calendar.DATE, 1);
+		}
+		return calendar;
+	}
+}
