@@ -1,44 +1,61 @@
 package org.tiaa;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
+import java.util.TimeZone;
 
 public class ValidationClass {
 
-	private static final String START_TIME = "00:00:00";
-	private static final String END_TIME = "05:00:00";
+	private static final int START_TIME = 0;
+	private static final int END_TIME = 5;
+	private static final String TIMEZONE = "EST";
 
 	public static void main(String[] args) {
-		System.out.println(isTimeElapsed());
+		/*System.out.println(isTimeElapsed(buildCalendar(2015, Calendar.DECEMBER, 13, 1, 0, 0),buildCalendar(2015, Calendar.DECEMBER, 13, 0, 0, 0),buildCalendar(2015, Calendar.DECEMBER, 13, 3, 0, 0)));
+		System.out.println(isTimeElapsed(buildCalendar(2015, Calendar.DECEMBER, 13, 2, 0, 0),buildCalendar(2015, Calendar.DECEMBER, 13, 3, 0, 0),buildCalendar(2015, Calendar.DECEMBER, 13, 5, 0, 0)));
+		System.out.println(isTimeElapsed(buildCalendar(2015, Calendar.DECEMBER, 13, 3, 0, 0),buildCalendar(2015, Calendar.DECEMBER, 13, 0, 0, 0),buildCalendar(2015, Calendar.DECEMBER, 13, 2, 0, 0)));
+		System.out.println(isTimeElapsed(buildCalendar(2015, Calendar.DECEMBER, 13, 4, 0, 0),buildCalendar(2015, Calendar.DECEMBER, 13, 0, 0, 0),buildCalendar(2015, Calendar.DECEMBER, 13, 5, 0, 0)));
+		System.out.println(isTimeElapsed(buildCalendar(2015, Calendar.DECEMBER, 13, 7, 0, 0),buildCalendar(2015, Calendar.DECEMBER, 13, 0, 0, 0),buildCalendar(2015, Calendar.DECEMBER, 13, 7, 0, 0)));*/
+		System.out.println(isTimeElapsed(buildCalendar(2015, Calendar.DECEMBER, 13, 7, 0, 0),
+				buildCalendar(2015, Calendar.DECEMBER, 13, 0, 0, 0),
+				buildCalendar(2015, Calendar.DECEMBER, 13, 7, 0, 0)));
 
 	}
 
-	private static boolean isTimeElapsed(){
+	private static boolean validateTime(Calendar currentCalendar) {
+		return isTimeElapsed(currentCalendar, getTime(START_TIME), getTime(END_TIME));
+	}
+
+	private static boolean isTimeElapsed(Calendar currentCalendar, Calendar startCalendar, Calendar endCalendar) {
+		System.out.println(currentCalendar.get(Calendar.DAY_OF_WEEK));
 		try {
-			Calendar currentCalendar = Calendar.getInstance();
-			if(currentCalendar.get(Calendar.DAY_OF_WEEK) == Calendar.SUNDAY){
-				Calendar startCalendar =getTime(START_TIME,true);
-				Calendar endCalendar =getTime(END_TIME,true);
-				Date currentDate = currentCalendar.getTime();
-				if (currentDate.after(startCalendar.getTime()) && currentDate.before(endCalendar.getTime())) {
+			if (currentCalendar.get(Calendar.DAY_OF_WEEK) == Calendar.SUNDAY) {
+				Date startTime = startCalendar.getTime();
+				Date endTime = endCalendar.getTime();
+				Date currentTime = currentCalendar.getTime();
+				if ((currentTime.equals(startTime) || currentTime.equals(endTime)) || (currentTime.after(startTime) && currentTime.before(endTime))) {
 					return true;
 				}
 			}
-		} catch (ParseException e) {
-			//no-op
+		} catch (Exception ex) {
+			// no-op
 		}
 		return false;
 	}
 	
-	private static Calendar getTime(String time,boolean isAddDate) throws ParseException{
-		Date startTime = new SimpleDateFormat("HH:mm:ss").parse(time);
-		Calendar calendar = Calendar.getInstance();
-		calendar.setTime(startTime);
-		if(isAddDate) {
-			calendar.add(Calendar.DATE, 1);
-		}
+	private static Calendar getTime(int hour) {
+		Calendar calendar = Calendar.getInstance(TimeZone.getTimeZone(TIMEZONE));
+		calendar.set(Calendar.HOUR, hour);
+		calendar.set(Calendar.MINUTE, 0);
+		calendar.set(Calendar.SECOND, 0);
+		return calendar;
+	}
+
+	private static Calendar buildCalendar(int year, int month, int date, int hh, int mm, int ss) {
+		Calendar calendar = new GregorianCalendar(year, month, date, hh, mm, ss);
+
+		System.out.println(calendar.getTime());
 		return calendar;
 	}
 }
